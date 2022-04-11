@@ -14,7 +14,7 @@ const LoginPage = () => {
   }
 
   const textFieldStyle = {
-    padding: 5
+    padding: 10
   }
 
   type State = {
