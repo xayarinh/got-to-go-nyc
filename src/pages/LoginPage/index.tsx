@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
+import { motion } from 'framer-motion'
+import { styled } from '@mui/system'
 import { Button, FormControlLabel, FormGroup, Container, Checkbox, Grid, Paper, TextField, InputLabel, InputAdornment, OutlinedInput, IconButton } from '@mui/material'
 import MenuBar from '../../components/MenuBar'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import SignInForm from '../../components/SignInForm'
+import SignUpForm from '../../components/SignUpForm'
+import { LoginPageContext } from './loginPageContext'
 
 const LoginPage = () => {
   const paperStyle = {
@@ -13,79 +16,36 @@ const LoginPage = () => {
     margin: '20px auto'
   }
 
-  const textFieldStyle = {
-    padding: 10
+  const [formType, setFormType] = React.useState('signin')
+
+  const switchToSignUp = () => {
+    setFormType('signup')
   }
 
-  type State = {
-    amount: string;
-    password: string;
-    weight: string;
-    weightRange: string;
-    showPassword: boolean;
+  const switchToSignIn = () => {
+    setFormType('signin')
   }
 
-  const [values, setValues] = React.useState<State>({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false
-  })
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword
-    })
-  }
+  const contextValue = { switchToSignUp, switchToSignIn }
 
   return (
 
+    <LoginPageContext.Provider value={contextValue}>
    <Container>
     <MenuBar></MenuBar>
     <Grid>
       <Paper elevation={10} style={paperStyle}>
-        <Grid justifyContent="center" display= "flex" >
+         <Grid justifyContent="center" display= "flex" >
           <h2>Welcome Back!</h2>
         </Grid>
 
-        <form>
-        <TextField label="Username" variant="standard" placeholder="Enter Username" type="text" fullWidth required style={textFieldStyle}></TextField>
-        <TextField
-          variant="standard"
-          label="Password"
-          placeholder="Enter Password"
-          type={values.showPassword ? 'text' : 'password'}
-          style={textFieldStyle}
-          fullWidth
-          required
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={handleClickShowPassword}>
-                    {values.showPassword ? <Visibility /> : <VisibilityOff /> }
-                  </IconButton>
-              </InputAdornment>
-            )
-          }}
-        />
-        <FormGroup>
-        <FormControlLabel control={<Checkbox defaultChecked={Boolean(false)}/>} label="Remember me?" />
-        </FormGroup>
-        </form>
-        <Grid direction="column" justifyContent="center" alignItems="center" display="flex" >
-          <Button variant="contained">Log In</Button>
-        </Grid>
-
-        <Grid direction="column" justifyContent="center" alignItems="center" display="flex" >
-          <p>New Here?</p>
-          <Button variant="contained">Create Account</Button>
-        </Grid>
+        {formType === 'signin' && <SignInForm></SignInForm>}
+        {formType === 'signup' && <SignUpForm></SignUpForm>}
 
       </Paper>
     </Grid>
    </Container>
+   </LoginPageContext.Provider>
 
   )
 }

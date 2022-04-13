@@ -16,7 +16,6 @@ const AuthButton: React.FC<AuthButtonProps> = ({ isAuthenticated }) => {
     </IconButton>
   } else {
     const navigate = useNavigate()
-
     return <Button color="inherit" onClick={() => { navigate('/login') }}>Login</Button>
   }
 }
